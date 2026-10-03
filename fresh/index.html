@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>For Likkiii 💌 From Abhii</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;600;700&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box}
+body{margin:0;min-height:100vh;font-family:"DM Sans",sans-serif;background:#fff7f2;color:#49363a;overflow-x:hidden}
+body:before,body:after{content:"";position:fixed;border-radius:50%;filter:blur(3px);z-index:-1}
+body:before{width:260px;height:260px;background:#ffdce8;top:-90px;left:-90px}
+body:after{width:300px;height:300px;background:#ffe8c8;right:-120px;bottom:-120px}
+.container{width:min(1050px,92%);margin:auto}
+.hero{text-align:center;padding:58px 16px 28px}
+.kicker{font-size:.78rem;letter-spacing:3px;text-transform:uppercase;color:#b67b87;font-weight:700}
+h1{font-family:Caveat,cursive;font-size:clamp(3.2rem,10vw,6.2rem);line-height:.9;margin:10px 0;color:#713f4d}
+.subtitle{font-family:Caveat,cursive;font-size:1.55rem;color:#86656d;margin:15px auto;max-width:620px}
+.validity{display:inline-block;margin-top:8px;padding:9px 18px;border:1px dashed #d49aa7;border-radius:999px;background:#fff;color:#8b5b67;font-size:.85rem}
+.coupons{display:grid;grid-template-columns:repeat(2,1fr);gap:22px;padding:22px 0 55px}
+.card{position:relative;background:#fff;border:1px solid #f0d8d9;border-radius:24px;padding:25px;box-shadow:0 12px 30px rgba(106,67,75,.08);transition:.25s;overflow:hidden}
+.card:hover{transform:translateY(-5px);box-shadow:0 18px 35px rgba(106,67,75,.13)}
+.card:after{content:"";position:absolute;right:-25px;top:-25px;width:90px;height:90px;background:#fff0f3;border-radius:50%}
+.icon{font-size:2rem}
+.card h2{font-family:Caveat,cursive;font-size:2rem;margin:8px 0 7px;color:#713f4d}
+.card p{margin:0 0 20px;line-height:1.55;color:#725d62;min-height:49px}
+.redeem{border:0;background:#713f4d;color:#fff;padding:11px 18px;border-radius:999px;font-weight:700;cursor:pointer;font-family:inherit}
+.redeem:hover{background:#5e3340}
+.card.redeemed{background:#fffafa;opacity:.8}
+.card.redeemed .redeem{background:#c49aa3;cursor:default}
+.card.redeemed:before{content:"REDEEMED ♥";position:absolute;right:18px;top:17px;font-size:.68rem;letter-spacing:1px;font-weight:800;color:#b06e7c;z-index:2}
+.footer{text-align:center;padding:5px 0 50px;color:#9b7b81;font-family:Caveat,cursive;font-size:1.35rem}
+.modal{position:fixed;inset:0;background:rgba(54,35,39,.45);display:none;align-items:center;justify-content:center;padding:20px;z-index:10}
+.modal.show{display:flex}
+.modal-box{background:#fffaf7;border-radius:28px;padding:32px;text-align:center;max-width:440px;width:100%;box-shadow:0 25px 70px rgba(0,0,0,.2);animation:pop .25s ease}
+@keyframes pop{from{transform:scale(.88);opacity:0}to{transform:scale(1);opacity:1}}
+.modal-box .big{font-size:3rem}
+.modal-box h3{font-family:Caveat,cursive;font-size:2.3rem;margin:10px 0;color:#713f4d}
+.modal-box p{line-height:1.6;color:#725d62}
+.close{margin-top:10px;border:0;background:#eee0e3;color:#713f4d;padding:10px 20px;border-radius:999px;cursor:pointer;font-weight:700}
+@media(max-width:700px){.coupons{grid-template-columns:1fr}.hero{padding-top:42px}.card{padding:22px}}
+</style>
+</head>
+<body>
+<main class="container">
+<section class="hero">
+  <div class="kicker">A little something from Abhii</div>
+  <h1>For Likkiii 💌</h1>
+  <div class="subtitle">Six little coupons for six little memories. Pick one whenever you want. ❤️</div>
+  <div class="validity">⏳ All coupons are valid for 6 months</div>
+</section>
+
+<section class="coupons" id="coupons"></section>
+
+<div class="footer">Made with love, just for you — Abhii ♡</div>
+</main>
+
+<div class="modal" id="modal">
+  <div class="modal-box">
+    <div class="big" id="modalIcon">💌</div>
+    <h3 id="modalTitle"></h3>
+    <p id="modalText"></p>
+    <p><strong>Valid for 6 months.</strong><br>Redeemed by Likkiii ❤️</p>
+    <button class="close" onclick="closeModal()">Close</button>
+  </div>
+</div>
+
+<script>
+const coupons = [
+  {icon:"🎬", title:"Movie Coupon", text:"Redeem for 1 movie together — your choice!"},
+  {icon:"🥞", title:"Dose Date Coupon", text:"Redeem for a dose date together!"},
+  {icon:"🌆", title:"Random Adventure Coupon", text:"You choose the place. I’ll come with you."},
+  {icon:"🍟", title:"You Pick, I Pay Coupon", text:"One snack/food treat on me."},
+  {icon:"👑", title:"Your Choice Coupon", text:"For one day, you get to decide what we do. I cannot complain."},
+  {icon:"💸", title:"Book Shopping Coupon", text:"One book-shopping trip. Your only job is to choose. My job is to encourage you. 😂"}
+];
+
+const couponBox = document.getElementById("coupons");
+
+coupons.forEach((c,i)=>{
+  const card=document.createElement("article");
+  card.className="card";
+  card.id="coupon-"+i;
+  card.innerHTML=`
+    <div class="icon">${c.icon}</div>
+    <h2>${c.title}</h2>
+    <p>“${c.text}”</p>
+    <button class="redeem" onclick="redeem(${i})">Redeem Coupon</button>`;
+  couponBox.appendChild(card);
+});
+
+function redeem(i){
+  const redeemed=localStorage.getItem("coupon-v2-"+i)==="true";
+  if(redeemed) return;
+  localStorage.setItem("coupon-v2-"+i,"true");
+  document.getElementById("coupon-"+i).classList.add("redeemed");
+  document.querySelector("#coupon-"+i+" .redeem").textContent="Redeemed ❤️";
+  document.querySelector("#coupon-"+i+" .redeem").disabled=true;
+  document.getElementById("modalIcon").textContent=coupons[i].icon;
+  document.getElementById("modalTitle").textContent=coupons[i].title;
+  document.getElementById("modalText").textContent=coupons[i].text;
+  document.getElementById("modal").classList.add("show");
+}
+function closeModal(){document.getElementById("modal").classList.remove("show")}
+window.addEventListener("click",e=>{if(e.target.id==="modal")closeModal()});
+
+coupons.forEach((_,i)=>{
+  if(localStorage.getItem("coupon-v2-"+i)==="true"){
+    const card=document.getElementById("coupon-"+i);
+    card.classList.add("redeemed");
+    const btn=card.querySelector(".redeem");
+    btn.textContent="Redeemed ❤️"; btn.disabled=true;
+  }
+});
+</script>
+</body>
+</html>
